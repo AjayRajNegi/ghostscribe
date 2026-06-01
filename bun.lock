@@ -6,6 +6,7 @@
       "name": "ghostscribe",
       "devDependencies": {
         "@types/bun": "latest",
+        "@types/node": "^25.9.1",
       },
       "peerDependencies": {
         "typescript": "^5",

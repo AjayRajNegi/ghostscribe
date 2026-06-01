@@ -1,35 +1,344 @@
-diff --git a/src/main.ts b/src/main.ts
+diff --git a/bun.lock b/bun.lock
+index 3ada872..8c88a7b 100644
+--- a/bun.lock
++++ b/bun.lock
+@@ -6,6 +6,7 @@
+       "name": "ghostscribe",
+       "devDependencies": {
+         "@types/bun": "latest",
++        "@types/node": "^25.9.1",
+       },
+       "peerDependencies": {
+         "typescript": "^5",
+diff --git a/diff.txt b/diff.txt
+index 9269db3..e69de29 100644
+--- a/diff.txt
++++ b/diff.txt
+@@ -1,35 +0,0 @@
+-diff --git a/src/main.ts b/src/main.ts
+-new file mode 100644
+-index 0000000..702f428
+---- /dev/null
+-+++ b/src/main.ts
+-@@ -0,0 +1 @@
+-+console.log("hello");
+-diff --git a/src/test.txt b/src/test.txt
+-new file mode 100644
+-index 0000000..54bf7ed
+---- /dev/null
+-+++ b/src/test.txt
+-@@ -0,0 +1 @@
+-+Hello 
+-\ No newline at end of file
+-diff --git a/tsconfig.json b/tsconfig.json
+-index bfa0fea..be3d138 100644
+---- a/tsconfig.json
+-+++ b/tsconfig.json
+-@@ -1,7 +1,7 @@
+- {
+-   "compilerOptions": {
+-     // Environment setup & latest features
+--    "lib": ["ESNext"],
+-+    "lib": ["ESNext", "DOM"],
+-     "target": "ESNext",
+-     "module": "Preserve",
+-     "moduleDetection": "force",
+-diff --git a/src/main.ts b/src/main.ts
+-index 702f428..5e17a48 100644
+---- a/src/main.ts
+-+++ b/src/main.ts
+-@@ -1 +1,2 @@
+- console.log("hello");
+-+console.log("bye");
+diff --git a/package-lock.json b/package-lock.json
 new file mode 100644
-index 0000000..702f428
+index 0000000..4de3894
 --- /dev/null
-+++ b/src/main.ts
-@@ -0,0 +1 @@
-+console.log("hello");
-diff --git a/src/test.txt b/src/test.txt
-new file mode 100644
-index 0000000..54bf7ed
---- /dev/null
-+++ b/src/test.txt
-@@ -0,0 +1 @@
-+Hello 
-\ No newline at end of file
-diff --git a/tsconfig.json b/tsconfig.json
-index bfa0fea..be3d138 100644
---- a/tsconfig.json
-+++ b/tsconfig.json
-@@ -1,7 +1,7 @@
- {
-   "compilerOptions": {
-     // Environment setup & latest features
--    "lib": ["ESNext"],
-+    "lib": ["ESNext", "DOM"],
-     "target": "ESNext",
-     "module": "Preserve",
-     "moduleDetection": "force",
++++ b/package-lock.json
+@@ -0,0 +1,62 @@
++{
++  "name": "ghostscribe",
++  "lockfileVersion": 3,
++  "requires": true,
++  "packages": {
++    "": {
++      "name": "ghostscribe",
++      "devDependencies": {
++        "@types/bun": "latest",
++        "@types/node": "^25.9.1"
++      },
++      "peerDependencies": {
++        "typescript": "^5"
++      }
++    },
++    "node_modules/@types/bun": {
++      "version": "1.3.14",
++      "resolved": "https://registry.npmjs.org/@types/bun/-/bun-1.3.14.tgz",
++      "integrity": "sha512-h1hFqFVcvAvD9j9K7ZW7vd82aSA+rTdznZa+5bwvCwqSB1jmmfLcbIWhOLx1/+boy/xmjgCs/OMUL8hRJSmnPw==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "bun-types": "1.3.14"
++      }
++    },
++    "node_modules/@types/node": {
++      "version": "25.9.1",
++      "resolved": "https://registry.npmjs.org/@types/node/-/node-25.9.1.tgz",
++      "integrity": "sha512-xfrlY7UD5rMJk3ZVJP8BNzS28J36YJg+xp+LPXV1TdWxr8uMH5A860QNxYDGQe/ylDSgjxE52Q9VnO7p75tJxg==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "undici-types": ">=7.24.0 <7.24.7"
++      }
++    },
++    "node_modules/bun-types": {
++      "version": "1.3.14",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "@types/node": "*"
++      }
++    },
++    "node_modules/typescript": {
++      "version": "5.9.3",
++      "license": "Apache-2.0",
++      "peer": true,
++      "bin": {
++        "tsc": "bin/tsc",
++        "tsserver": "bin/tsserver"
++      },
++      "engines": {
++        "node": ">=14.17"
++      }
++    },
++    "node_modules/undici-types": {
++      "version": "7.24.6",
++      "dev": true,
++      "license": "MIT"
++    }
++  }
++}
+diff --git a/package.json b/package.json
+index 9d4a236..451907f 100644
+--- a/package.json
++++ b/package.json
+@@ -4,7 +4,8 @@
+   "type": "module",
+   "private": true,
+   "devDependencies": {
+-    "@types/bun": "latest"
++    "@types/bun": "latest",
++    "@types/node": "^25.9.1"
+   },
+   "peerDependencies": {
+     "typescript": "^5"
 diff --git a/src/main.ts b/src/main.ts
-index 702f428..5e17a48 100644
+index 5e17a48..aee23ad 100644
 --- a/src/main.ts
 +++ b/src/main.ts
-@@ -1 +1,2 @@
- console.log("hello");
-+console.log("bye");
+@@ -1,2 +1,19 @@
+-console.log("hello");
+-console.log("bye");
++import { execSync } from "child_process";
++import { appendFileSync, readFileSync } from "fs";
++
++try {
++  const diff = execSync("git diff HEAD", { encoding: "utf8" });
++  console.log("diff", diff);
++  appendFileSync("diff.txt", diff);
++
++  const prompt = readFileSync("prompt.txt", "utf8");
++  const diffContent = readFileSync("diff.txt", "utf8");
++
++  execSync("ollama run llama3.1:8b", {
++    input: `${prompt}\n${diffContent}`,
++    stdio: ["pipe", "inherit", "inherit"],
++  });
++} catch (error) {
++  console.error(error);
++  process.exit(1);
++}
+diff --git a/tsconfig.json b/tsconfig.json
+index be3d138..458f94b 100644
+--- a/tsconfig.json
++++ b/tsconfig.json
+@@ -7,6 +7,7 @@
+     "moduleDetection": "force",
+     "jsx": "react-jsx",
+     "allowJs": true,
++    "types": ["node"],
+ 
+     // Bundler mode
+     "moduleResolution": "bundler",
+diff --git a/bun.lock b/bun.lock
+index 3ada872..8c88a7b 100644
+--- a/bun.lock
++++ b/bun.lock
+@@ -6,6 +6,7 @@
+       "name": "ghostscribe",
+       "devDependencies": {
+         "@types/bun": "latest",
++        "@types/node": "^25.9.1",
+       },
+       "peerDependencies": {
+         "typescript": "^5",
+diff --git a/diff.txt b/diff.txt
+index 9269db3..e69de29 100644
+--- a/diff.txt
++++ b/diff.txt
+@@ -1,35 +0,0 @@
+-diff --git a/src/main.ts b/src/main.ts
+-new file mode 100644
+-index 0000000..702f428
+---- /dev/null
+-+++ b/src/main.ts
+-@@ -0,0 +1 @@
+-+console.log("hello");
+-diff --git a/src/test.txt b/src/test.txt
+-new file mode 100644
+-index 0000000..54bf7ed
+---- /dev/null
+-+++ b/src/test.txt
+-@@ -0,0 +1 @@
+-+Hello 
+-\ No newline at end of file
+-diff --git a/tsconfig.json b/tsconfig.json
+-index bfa0fea..be3d138 100644
+---- a/tsconfig.json
+-+++ b/tsconfig.json
+-@@ -1,7 +1,7 @@
+- {
+-   "compilerOptions": {
+-     // Environment setup & latest features
+--    "lib": ["ESNext"],
+-+    "lib": ["ESNext", "DOM"],
+-     "target": "ESNext",
+-     "module": "Preserve",
+-     "moduleDetection": "force",
+-diff --git a/src/main.ts b/src/main.ts
+-index 702f428..5e17a48 100644
+---- a/src/main.ts
+-+++ b/src/main.ts
+-@@ -1 +1,2 @@
+- console.log("hello");
+-+console.log("bye");
+diff --git a/package-lock.json b/package-lock.json
+new file mode 100644
+index 0000000..4de3894
+--- /dev/null
++++ b/package-lock.json
+@@ -0,0 +1,62 @@
++{
++  "name": "ghostscribe",
++  "lockfileVersion": 3,
++  "requires": true,
++  "packages": {
++    "": {
++      "name": "ghostscribe",
++      "devDependencies": {
++        "@types/bun": "latest",
++        "@types/node": "^25.9.1"
++      },
++      "peerDependencies": {
++        "typescript": "^5"
++      }
++    },
++    "node_modules/@types/bun": {
++      "version": "1.3.14",
++      "resolved": "https://registry.npmjs.org/@types/bun/-/bun-1.3.14.tgz",
++      "integrity": "sha512-h1hFqFVcvAvD9j9K7ZW7vd82aSA+rTdznZa+5bwvCwqSB1jmmfLcbIWhOLx1/+boy/xmjgCs/OMUL8hRJSmnPw==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "bun-types": "1.3.14"
++      }
++    },
++    "node_modules/@types/node": {
++      "version": "25.9.1",
++      "resolved": "https://registry.npmjs.org/@types/node/-/node-25.9.1.tgz",
++      "integrity": "sha512-xfrlY7UD5rMJk3ZVJP8BNzS28J36YJg+xp+LPXV1TdWxr8uMH5A860QNxYDGQe/ylDSgjxE52Q9VnO7p75tJxg==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "undici-types": ">=7.24.0 <7.24.7"
++      }
++    },
++    "node_modules/bun-types": {
++      "version": "1.3.14",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "@types/node": "*"
++      }
++    },
++    "node_modules/typescript": {
++      "version": "5.9.3",
++      "license": "Apache-2.0",
++      "peer": true,
++      "bin": {
++        "tsc": "bin/tsc",
++        "tsserver": "bin/tsserver"
++      },
++      "engines": {
++        "node": ">=14.17"
++      }
++    },
++    "node_modules/undici-types": {
++      "version": "7.24.6",
++      "dev": true,
++      "license": "MIT"
++    }
++  }
++}
+diff --git a/package.json b/package.json
+index 9d4a236..451907f 100644
+--- a/package.json
++++ b/package.json
+@@ -4,7 +4,8 @@
+   "type": "module",
+   "private": true,
+   "devDependencies": {
+-    "@types/bun": "latest"
++    "@types/bun": "latest",
++    "@types/node": "^25.9.1"
+   },
+   "peerDependencies": {
+     "typescript": "^5"
+diff --git a/src/main.ts b/src/main.ts
+index 5e17a48..aee23ad 100644
+--- a/src/main.ts
++++ b/src/main.ts
+@@ -1,2 +1,19 @@
+-console.log("hello");
+-console.log("bye");
++import { execSync } from "child_process";
++import { appendFileSync, readFileSync } from "fs";
++
++try {
++  const diff = execSync("git diff HEAD", { encoding: "utf8" });
++  console.log("diff", diff);
++  appendFileSync("diff.txt", diff);
++
++  const prompt = readFileSync("prompt.txt", "utf8");
++  const diffContent = readFileSync("diff.txt", "utf8");
++
++  execSync("ollama run llama3.1:8b", {
++    input: `${prompt}\n${diffContent}`,
++    stdio: ["pipe", "inherit", "inherit"],
++  });
++} catch (error) {
++  console.error(error);
++  process.exit(1);
++}
+diff --git a/tsconfig.json b/tsconfig.json
+index be3d138..458f94b 100644
+--- a/tsconfig.json
++++ b/tsconfig.json
+@@ -7,6 +7,7 @@
+     "moduleDetection": "force",
+     "jsx": "react-jsx",
+     "allowJs": true,
++    "types": ["node"],
+ 
+     // Bundler mode
+     "moduleResolution": "bundler",
