@@ -26,3 +26,10 @@ index bfa0fea..be3d138 100644
      "target": "ESNext",
      "module": "Preserve",
      "moduleDetection": "force",
+diff --git a/src/main.ts b/src/main.ts
+index 702f428..5e17a48 100644
+--- a/src/main.ts
++++ b/src/main.ts
+@@ -1 +1,2 @@
+ console.log("hello");
++console.log("bye");
