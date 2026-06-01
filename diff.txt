@@ -1,0 +1,28 @@
+diff --git a/src/main.ts b/src/main.ts
+new file mode 100644
+index 0000000..702f428
+--- /dev/null
++++ b/src/main.ts
+@@ -0,0 +1 @@
++console.log("hello");
+diff --git a/src/test.txt b/src/test.txt
+new file mode 100644
+index 0000000..54bf7ed
+--- /dev/null
++++ b/src/test.txt
+@@ -0,0 +1 @@
++Hello 
+\ No newline at end of file
+diff --git a/tsconfig.json b/tsconfig.json
+index bfa0fea..be3d138 100644
+--- a/tsconfig.json
++++ b/tsconfig.json
+@@ -1,7 +1,7 @@
+ {
+   "compilerOptions": {
+     // Environment setup & latest features
+-    "lib": ["ESNext"],
++    "lib": ["ESNext", "DOM"],
+     "target": "ESNext",
+     "module": "Preserve",
+     "moduleDetection": "force",
