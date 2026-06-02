@@ -206,4 +206,4 @@ export function parseDiff(rawDiff: string): FileDiff[] {
   return blocks.map(parseFileDiff);
 }
 
-console.log(parseDiff(getDiff()));
+// console.log(parseDiff(getDiff()));
