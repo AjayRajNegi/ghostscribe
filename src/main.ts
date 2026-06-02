@@ -9,6 +9,7 @@ try {
   const diffContent = readFileSync("diff.txt", "utf8");
 
   execSync("ollama run gemma3:1b", {
+    //   execSync("ollama run llama3.1:8b", {
     input: `${prompt}\n${diffContent}`,
     stdio: ["pipe", "inherit", "inherit"],
   });
