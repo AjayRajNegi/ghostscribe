@@ -1,18 +1,20 @@
-import { parseDiff } from "../diff/parser";
-import { getContext } from "../git/context";
-import { getDiff } from "../git/diff";
+import { type FileDiff } from "../diff/parser";
+import { type RepoContext } from "../git/context";
 
 interface GenerationInput {
   systemPrompt: string;
   userMessage: string;
 }
 
-export const llmPrompt = async (): Promise<GenerationInput> => {
-  const context = await getContext();
-  const diff = parseDiff(getDiff());
-
+export const llmPrompt = async ({
+  context,
+  fileDiffs,
+}: {
+  context: RepoContext;
+  fileDiffs: FileDiff[];
+}): Promise<GenerationInput> => {
   const systemPrompt = `
-  You are an expert software engineer writing git commit messages.
+  You are an expert software engineer writing git commit messages based on the git diffs provided to you.
   Output only the commit message - no explanations, no markdown, no backticks.
   Use imperative mood ("Fix bug", not "Fixed bug").
   Keep the first line under 100 characters.
@@ -25,7 +27,7 @@ export const llmPrompt = async (): Promise<GenerationInput> => {
   Branch: ${context.branchName}
   Recent commits for style reference: ${context.recentCommits.join("\n")}
   
-  Git diff: ${JSON.stringify(diff, null, 2)}`;
+  Git diff: ${JSON.stringify(fileDiffs, null, 2)}`;
 
   return { systemPrompt, userMessage };
 };

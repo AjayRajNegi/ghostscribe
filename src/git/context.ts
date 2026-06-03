@@ -34,7 +34,7 @@ const getCommits = (count: number): string[] => {
   }
 };
 
-interface RepoContext {
+export interface RepoContext {
   repoName: string;
   branchName: string;
   recentCommits: string[];
