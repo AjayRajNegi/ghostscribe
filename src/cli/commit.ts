@@ -59,5 +59,3 @@ export const runCommit = async ({ dryRun }: CommitOptions): Promise<void> => {
     process.exit(1);
   }
 };
-
-runCommit({ dryRun: true });
