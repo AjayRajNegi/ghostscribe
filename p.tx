@@ -1,0 +1,99 @@
+Review my phase 1 code:
+diff.ts:
+
+```typescript
+import { execSync } from "child_process";
+
+export const getDiff = (): string => {
+  try {
+    return execSync("git diff HEAD~1", { encoding: "utf8" });
+  } catch (error) {
+    console.error("Failed to get git diff:", error);
+    throw error;
+  }
+};
+```
+
+context.ts:
+
+```typescript
+import { execSync } from "child_process";
+import { readFile } from "fs/promises";
+
+const getName = async (): Promise<string> => {
+  const { name } = JSON.parse(await readFile("package.json", "utf8")) as {
+    name: string;
+  };
+
+  return name;
+};
+const getBranchName = (): string => {
+  try {
+    return execSync("git branch --show-current", {
+      encoding: "utf8",
+    }).trim();
+  } catch (error) {
+    console.error("Failed to get branch name:", error);
+    throw error;
+  }
+};
+const getCommits = (count: number): string[] => {
+  try {
+    return execSync(`git log --pretty=format:"%s" -n ${count}`, {
+      encoding: "utf8",
+    })
+      .trim()
+      .split("\n");
+  } catch (error) {
+    console.error("Failed to get commits:", error);
+    throw error;
+  }
+};
+
+export const getContext = async (): Promise<string> => {
+  return `The name of repo is ${await getName()}, current branch is ${getBranchName()}, latest 5 commits are [${getCommits(5)}].\n`;
+};
+```
+
+client.ts:
+
+```typescript
+import { execSync } from "child_process";
+import { llmPrompt } from "../prompts/commit";
+
+export const callLLM = async () => {
+  try {
+    return execSync("ollama run llama3.1:8b", {
+      input: `${await llmPrompt()}`,
+      stdio: ["pipe", "inherit", "inherit"],
+    });
+  } catch (error) {
+    console.error("Failed to get git diff:", error);
+    throw error;
+  }
+};
+
+callLLM();
+```
+
+commit.ts:
+
+```typescript
+import { parseDiff } from "../diff/parser";
+import { getContext } from "../git/context";
+import { getDiff } from "../git/diff";
+
+export const llmPrompt = async (): Promise<string> => {
+  const systemPrompt = `You are an expert software engineer. Your sole task is to generate professional, concise git commit messages based on the provided project context and git diff.
+  Output only the commit message — no explanations, no summaries, no introductions, no extra text.
+  Use the imperative mood, present tense (e.g., "Fix bug" not "Fixes bug" or "Fixed bug").
+  Keep the first line under 72 characters.
+  Optionally follow Conventional Commits style (e.g., feat:, fix:, docs:, refactor:, test:, chore:), but prioritize clarity and professionalism.
+  If multiple changes are present, produce one commit message that accurately describes the overall change.
+  Do not include backticks, markdown, or any formatting — just the raw commit message text.
+  Project details: ${await getContext()}
+  Git diff: ${parseDiff(getDiff())}
+  Remember: Your response must be only the commit message. Nothing else. `;
+  return systemPrompt;
+};
+```

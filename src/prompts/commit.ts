@@ -7,7 +7,7 @@ export const llmPrompt = async (): Promise<string> => {
   Output only the commit message — no explanations, no summaries, no introductions, no extra text.
   Use the imperative mood, present tense (e.g., "Fix bug" not "Fixes bug" or "Fixed bug").
   Keep the first line under 72 characters.
-  Optionally follow Conventional Commits style (e.g., feat:, fix:, docs:, refactor:, test:, chore:), but prioritize clarity and professionalism.
+  Always follow Conventional Commits style (e.g., feat:, fix:, docs:, refactor:, test:, chore:), but prioritize clarity and professionalism.
   If multiple changes are present, produce one commit message that accurately describes the overall change.
   Do not include backticks, markdown, or any formatting — just the raw commit message text.
   Project details: ${await getContext()}
