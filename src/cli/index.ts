@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 import { Command } from "commander";
 import { runCommit } from "./commit";
 
@@ -10,7 +10,7 @@ program
   .version("0.1.0");
 
 program
-  .name("commit")
+  .command("commit")
   .description("Generate a commit message form staged changes")
   .option("--dry-run", "Print the commit message without committing")
   .action(async (options) => {

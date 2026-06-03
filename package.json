@@ -2,6 +2,9 @@
   "name": "ghostscribe",
   "module": "index.ts",
   "type": "module",
+  "bin": {
+    "ghostscribe": "./src/cli/index.ts"
+  },
   "private": true,
   "devDependencies": {
     "@types/bun": "latest",
