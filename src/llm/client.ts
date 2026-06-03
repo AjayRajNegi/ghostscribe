@@ -3,8 +3,9 @@ import { llmPrompt } from "../prompts/commit";
 
 export const callLLM = async () => {
   try {
+    const input = `${(await llmPrompt()).systemPrompt} ${(await llmPrompt()).userMessage}`;
     return execSync("ollama run llama3.1:8b", {
-      input: `${await llmPrompt()}`,
+      input: input,
       stdio: ["pipe", "inherit", "inherit"],
     });
   } catch (error) {

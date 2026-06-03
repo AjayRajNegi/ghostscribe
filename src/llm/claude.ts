@@ -1,8 +1,13 @@
 import Anthropic from "@anthropic-ai/sdk";
 
+interface InputPrompt {
+  systemPrompt: string;
+  userMessage: string;
+}
+
 const client = new Anthropic();
 
-export const callClaude = async (prompt: string): Promise<string> => {
+export const callClaude = async (input: InputPrompt): Promise<string> => {
   if (!process.env.ANTHROPIC_API_KEY) {
     throw new Error(
       "ANTHROPIC_API_KEY is not set. Get a key at https://console.anthropic.com and set it in your environment.",
@@ -12,7 +17,8 @@ export const callClaude = async (prompt: string): Promise<string> => {
   const message = await client.messages.create({
     model: "claude-opus-4-5",
     max_tokens: 256,
-    messages: [{ role: "user", content: prompt }],
+    system: input.systemPrompt,
+    messages: [{ role: "user", content: input.userMessage }],
   });
 
   const block = message.content[0];
