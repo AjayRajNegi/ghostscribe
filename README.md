@@ -1,6 +1,6 @@
 # ghostscribe
 
-## Phase 1: (01-06-2026)
+### Phase 1: (01-06-2026)
 
 - Basic working version:
   - File which reads diffs and pass them llm for a response.
