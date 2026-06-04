@@ -57,8 +57,6 @@ export const llmPrompt = async ({
   - No explanations.
   - No quotes.
   - No backticks.
-  - No repository names.
-  - No branch names.
   - No reference to the "the codebase", "the project", or "the repository".
   - Keep under 100 characters.
   - User imperative mood.
@@ -82,18 +80,7 @@ export const llmPrompt = async ({
   - modify
   - enhance
   - miscellaneous changes
-  
-  Bad:
-  feat: improve pipelines
-  
-  Good:
-  feat(parse): add commit message generation from parsed git hunks
-  
-  Good:
-  fix(diff): preserve renamed file paths during diff parsing
-  
-  Good:
-  refactor(prompt): remove repository metadata from commit generation`;
+  `;
 
   const userMessage = `
   Analyze these code changes and generate the most specific commmit message possible.
