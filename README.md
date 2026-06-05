@@ -19,3 +19,7 @@
   - `src/cli/commit.ts` — the command handler using Commander.js
   - Working `ghostscribe commit` command
   - `ghostscribe commit --dry-run` that prints without prompting
+
+### Phase 3:
+
+- Re-writing the parser
