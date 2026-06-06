@@ -59,14 +59,20 @@ export const llmPrompt = async ({
   const userMessage = `
   Analyze these code changes and generate the most specific commmit message possible.
   
-  Changed files:
-  
-
-  
-  Relevant code changes:
+  Changed files: ${fileDiffs.filesChanged}
+  Files: ${fileDiffs.files.map(
+    (file) => `name: ${file.name}
+    oldPath: ${file.oldPath}
+    newPath: ${file.newPath}
+    status: ${file.status}
+    isBinary: ${file.isBinary}
+    additions: ${file.additions}
+    reductions: ${file.additions}
+  `,
+  )}
   `;
-  // ${fileDiffs.map((file) => `- ${file.path} (${file.status}, +${file.additions}/-${file.deletions})`).join("\n")}
-  // ${summarizeFiles(fileDiffs)}
+
+  console.log(userMessage);
 
   return { systemPrompt, userMessage };
 };

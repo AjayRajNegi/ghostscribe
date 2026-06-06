@@ -26,7 +26,6 @@ export const runCommit = async ({ dryRun }: CommitOptions): Promise<void> => {
   // const fileDiffs = parseDiff(rawDiff);
   const fileDiffs = parseDiff(rawDiff);
   const generationInput = await llmPrompt({ context, fileDiffs });
-  console.log(generationInput.systemPrompt, generationInput.userMessage);
 
   let commitMessage: string;
   try {

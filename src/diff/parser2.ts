@@ -1,7 +1,7 @@
 import { getDiff } from "../git/diff";
 
 export interface FileDiff {
-  filesChanged: number;
+  filesChanged: string[];
   files: Hunk[];
 }
 
@@ -88,10 +88,9 @@ function parseFileHeader(block: string): Hunk {
 
 export function parseDiff(rawDiff: string): FileDiff {
   const blocks = splitIntoFileBlocks(rawDiff);
-  const filesChanged = blocks.length;
   const files = blocks.map((block) => parseFileHeader(block));
+  let filesChanged: string[] = [];
+  files.filter((file) => filesChanged.push(file.name));
 
   return { filesChanged, files: files };
 }
-
-console.log(parseDiff(getDiff()));
