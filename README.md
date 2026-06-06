@@ -20,6 +20,9 @@
   - Working `ghostscribe commit` command
   - `ghostscribe commit --dry-run` that prints without prompting
 
-### Phase 3:
+### Phase 3: (06-06-2026)
 
 - Re-writing the parser
+  - Reduced the token count for llm by modifying properties from `FileDiff`.
+  - Passed `FileDiff` as string, rather than json.
+  - Better `FileDiff` structure.
