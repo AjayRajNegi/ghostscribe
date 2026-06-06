@@ -1,5 +1,4 @@
-// import type { FileDiff } from "../diff/parser";
-import type { FileDiff } from "../diff/parser2";
+import type { FileDiff } from "../diff/parser";
 import type { RepoContext } from "../git/context";
 
 interface GenerationInput {
@@ -8,7 +7,6 @@ interface GenerationInput {
 }
 
 export const llmPrompt = async ({
-  context,
   fileDiffs,
 }: {
   context: RepoContext;
@@ -71,8 +69,5 @@ export const llmPrompt = async ({
   `,
   )}
   `;
-
-  console.log(userMessage);
-
   return { systemPrompt, userMessage };
 };

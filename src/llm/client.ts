@@ -13,7 +13,6 @@ export const callLLM = async (input: InputPrompt): Promise<string> => {
     stdio: ["pipe", "pipe", "inherit"],
     encoding: "utf-8",
   });
-  // console.log("result", result);
 
   return result;
 };
