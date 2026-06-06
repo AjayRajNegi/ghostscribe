@@ -1,4 +1,5 @@
-import type { FileDiff } from "../diff/parser";
+// import type { FileDiff } from "../diff/parser";
+import type { FileDiff } from "../diff/parser2";
 import type { RepoContext } from "../git/context";
 
 interface GenerationInput {
@@ -6,39 +7,12 @@ interface GenerationInput {
   userMessage: string;
 }
 
-// function summarizeFiles(fileDiffs: FileDiff[]): string {
-//   return fileDiffs
-//     .map((file) => {
-//       const additions = file.hunks
-//         .flatMap((h) => h.lines)
-//         .filter((l) => l.type === "addition")
-//         .slice(0, 20)
-//         .map((l) => `+ ${l.content}`);
-
-//       const deletions = file.hunks
-//         .flatMap((h) => h.lines)
-//         .filter((l) => l.type === "deletion")
-//         .slice(0, 20)
-//         .map((l) => `- ${l.content}`);
-
-//       return `
-//           File: ${file.path}
-//           Status: ${file.status}
-//           Additions: ${file.additions}
-//           Deletions: ${file.deletions}
-
-//       ${[...additions, ...deletions].join("\n")}
-//       `;
-//     })
-//     .join("\n\n");
-// }
-
 export const llmPrompt = async ({
   context,
   fileDiffs,
 }: {
   context: RepoContext;
-  fileDiffs: FileDiff[];
+  fileDiffs: FileDiff;
 }): Promise<GenerationInput> => {
   const systemPrompt = `
   You are an expert software engineer that writes highly specific git commit messages.
@@ -87,10 +61,11 @@ export const llmPrompt = async ({
   
   Changed files:
   
-  ${fileDiffs.map((file) => `- ${file.path} (${file.status}, +${file.additions}/-${file.deletions})`).join("\n")}
+
   
   Relevant code changes:
   `;
+  // ${fileDiffs.map((file) => `- ${file.path} (${file.status}, +${file.additions}/-${file.deletions})`).join("\n")}
   // ${summarizeFiles(fileDiffs)}
 
   return { systemPrompt, userMessage };

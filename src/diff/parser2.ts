@@ -1,13 +1,26 @@
 import { getDiff } from "../git/diff";
 
-let rawDiff = getDiff();
+export interface FileDiff {
+  filesChanged: number;
+  files: Hunk[];
+}
 
-function splitIntoFileBlocks(rawDiff: string): string[] {
+export interface Hunk {
+  name: string;
+  oldPath: string;
+  newPath: string;
+  status: string;
+  isBinary: boolean;
+  additions: string[];
+  reductions: string[];
+}
+
+export function splitIntoFileBlocks(rawDiff: string): string[] {
   const blocks = rawDiff.split(/(?=^diff --git)/m);
   return blocks.filter((block) => block.trim().length > 0);
 }
 
-function parseFileHeader(block: string) {
+function parseFileHeader(block: string): Hunk {
   const headerMatch = block.match(/^diff --git a\/(.+?) b\/(.+?)$/m);
 
   if (!headerMatch) {
@@ -18,6 +31,18 @@ function parseFileHeader(block: string) {
   const newPath = headerMatch[2];
 
   if (!newPath) {
+    throw new Error("Invalid file path.");
+  }
+
+  let name = "";
+  for (let i = newPath.length - 1; i >= 0; i--) {
+    if (newPath[i] === "/") {
+      break;
+    }
+    name = newPath[i] + name;
+  }
+
+  if (!newPath || !oldPath) {
     throw new Error("Invalid diff block: missing newPath.");
   }
 
@@ -50,9 +75,23 @@ function parseFileHeader(block: string) {
     }
   }
 
-  return { oldPath, newPath, status, isBinary, additions, reductions };
+  return {
+    name,
+    oldPath,
+    newPath,
+    status,
+    isBinary,
+    additions,
+    reductions,
+  };
 }
 
-console.log(
-  splitIntoFileBlocks(rawDiff).map((block) => parseFileHeader(block)),
-);
+export function parseDiff(rawDiff: string): FileDiff {
+  const blocks = splitIntoFileBlocks(rawDiff);
+  const filesChanged = blocks.length;
+  const files = blocks.map((block) => parseFileHeader(block));
+
+  return { filesChanged, files: files };
+}
+
+console.log(parseDiff(getDiff()));

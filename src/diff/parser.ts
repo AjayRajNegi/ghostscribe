@@ -205,5 +205,3 @@ export function parseDiff(rawDiff: string): FileDiff[] {
   const blocks = splitIntoFileBlocks(rawDiff);
   return blocks.map(parseFileDiff);
 }
-
-// console.log(parseDiff(getDiff()));

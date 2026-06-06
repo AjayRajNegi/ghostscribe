@@ -1,5 +1,6 @@
 import { execSync } from "child_process";
-import { parseDiff } from "../diff/parser";
+// import { parseDiff } from "../diff/parser";
+import { parseDiff } from "../diff/parser2";
 import { getContext } from "../git/context";
 import { getDiff } from "../git/diff";
 import { callClaude } from "../llm/claude";
@@ -22,6 +23,7 @@ export const runCommit = async ({ dryRun }: CommitOptions): Promise<void> => {
 
   console.log("Reading repo context...");
   const context = await getContext();
+  // const fileDiffs = parseDiff(rawDiff);
   const fileDiffs = parseDiff(rawDiff);
   const generationInput = await llmPrompt({ context, fileDiffs });
   console.log(generationInput.systemPrompt, generationInput.userMessage);
