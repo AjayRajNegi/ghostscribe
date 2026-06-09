@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 export const UserInput = ({ commit }: { commit: string }) => {
   return (
     <>
-      <Box flexDirection="column" padding={1}>
+      <Box flexDirection="column" padding={1} borderStyle={"round"}>
         {/* <Text>Generated commit message is: {commit}</Text> */}
         <Text color={"blue"}>Do you want to commit with this message?</Text>
       </Box>
