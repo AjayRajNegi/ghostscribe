@@ -12,9 +12,11 @@ program
 program
   .command("commit")
   .description("Generate a commit message form staged changes")
-  .option("--dry-run", "Print the commit message without committing")
+  //.option("--dry-run", "Print the commit message without committing")
   .action(async (options) => {
-    await runCommit({ dryRun: options.dryRun ?? false });
+    let commit;
+    commit = await runCommit({ dryRun: options.dryRun ?? false });
+    console.log("newCommit", commit);
   });
 
 program.parseAsync(process.argv);

@@ -10,7 +10,7 @@ interface CommitOptions {
   dryRun: boolean;
 }
 
-export const runCommit = async ({ dryRun }: CommitOptions): Promise<void> => {
+export const runCommit = async ({ dryRun }: CommitOptions): Promise<string> => {
   console.log("Reading staged changes...");
   let rawDiff: string;
   try {
@@ -45,13 +45,15 @@ export const runCommit = async ({ dryRun }: CommitOptions): Promise<void> => {
 
   if (dryRun) {
     console.log("\n[dry-run] Skipping git commit.");
-    return;
+    return "";
   }
 
+  return commitMessage;
+
   try {
-    execSync(`git commit -m "${commitMessage.replace(/"/g, '\\"')}"`, {
-      stdio: "inherit",
-    });
+    // execSync(`git commit -m "${commitMessage.replace(/"/g, '\\"')}"`, {
+    //   stdio: "inherit",
+    // });
     console.log("\nCommit created successfully.");
   } catch (error) {
     console.error("git commit failed. You can commit manually with:");
