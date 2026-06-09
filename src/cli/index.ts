@@ -1,6 +1,9 @@
 #!/usr/bin/env bun
 import { Command } from "commander";
 import { runCommit } from "./commit";
+import { render } from "ink";
+import React from "react";
+import { UserInput } from "../tui/test";
 
 const program = new Command();
 
@@ -11,12 +14,15 @@ program
 
 program
   .command("commit")
-  .description("Generate a commit message form staged changes")
-  //.option("--dry-run", "Print the commit message without committing")
+  .description("Generate a commit message from staged changes")
   .action(async (options) => {
-    let commit;
-    commit = await runCommit({ dryRun: options.dryRun ?? false });
-    console.log("newCommit", commit);
+    const commit = await runCommit({ dryRun: options.dryRun ?? false });
+
+    const { waitUntilExit } = render(
+      React.createElement(UserInput, { commit }),
+    );
+
+    await waitUntilExit();
   });
 
 program.parseAsync(process.argv);
