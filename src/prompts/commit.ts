@@ -20,7 +20,7 @@ export const llmPrompt = async ({
   1. Identify the primary behavioral change.
   2. Identify the most important files, functions, classes, APIs, tests, or configs affected.
   3. Determine the most appropriate commit type.
-  4. Generate ONE commit message.
+  4. Generate ONE commit message and NOTHING else.
   
   Rules:
   
