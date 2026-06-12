@@ -108,6 +108,7 @@ function Action({
       }
       exit();
     }
+    exit();
   });
 
   const isYes = label === "Yes";
