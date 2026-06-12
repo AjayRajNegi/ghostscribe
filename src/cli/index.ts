@@ -16,10 +16,7 @@ program
   .command("commit")
   .description("Generate a commit message from staged changes")
   .action(async (options) => {
-    // const commit = await runCommit({ dryRun: options.dryRun ?? false });
-
     const { waitUntilExit } = render(React.createElement(UserInput));
-
     await waitUntilExit();
   });
 

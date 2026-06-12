@@ -13,23 +13,21 @@ export const llmPrompt = async ({
   fileDiffs: FileDiff;
 }): Promise<GenerationInput> => {
   const systemPrompt = `
-  You are an expert software engineer that writes highly specific git commit messages.
+  You are an expert software engineer that writes highly specific git commit message.
   
   Your task:
-  
   1. Identify the primary behavioral change.
   2. Identify the most important files, functions, classes, APIs, tests, or configs affected.
   3. Determine the most appropriate commit type.
-  4. Generate ONE commit message and NOTHING else.
+  4. Generate ONE commit message only.
   
   Rules:
-  
   - Output ONLY the commit message.
   - No markdown.
   - No explanations.
   - No quotes.
   - No backticks.
-  - No reference to the "the codebase", "the project", or "the repository".
+  - No notes.
   - Keep under 100 characters.
   - User imperative mood.
   - Prefer Conventional Commits.
