@@ -10,8 +10,8 @@ interface CommitOptions {
 }
 
 export const runCommit = async ({ dryRun }: CommitOptions): Promise<string> => {
-  console.log(" ");
-  console.log("Reading staged changes...");
+  // console.log(" ");
+  // console.log("Reading staged changes...");
   let rawDiff: string;
   try {
     rawDiff = getDiff();
@@ -37,9 +37,9 @@ export const runCommit = async ({ dryRun }: CommitOptions): Promise<string> => {
     process.exit(1);
   }
 
-  console.log("Suggested commit message:");
-  console.log(" ");
-  console.log(commitMessage);
+  // console.log("Suggested commit message:");
+  // console.log(" ");
+  // console.log(commitMessage);
 
   if (dryRun) {
     console.log("\n[dry-run] Skipping git commit.");
