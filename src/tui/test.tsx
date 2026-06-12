@@ -1,19 +1,32 @@
 import { execSync } from "child_process";
 import { Box, Text, useFocus, useInput, useApp } from "ink";
 import { useState, useEffect } from "react";
+import { runCommit } from "../cli/commit";
 
-export const UserInput = ({ commit }: { commit: string }) => {
-  return (
-    <>
-      <Box flexDirection="column" padding={1} borderStyle={"round"}>
-        {/* <Text>Generated commit message is: {commit}</Text> */}
-        <Text color={"blue"}>Do you want to commit with this message?</Text>
+export const UserInput = () => {
+  const [commit, setCommit] = useState<string | null>(null);
+
+  useEffect(() => {
+    runCommit({ dryRun: false }).then(setCommit);
+  }, []);
+
+  if (commit === null) {
+    return (
+      <Box paddingX={1}>
+        <Text dimColor>Generating commit message...</Text>
       </Box>
-      <Box flexDirection="row" padding={1} gap={5}>
+    );
+  }
+
+  return (
+    <Box flexDirection="column" borderStyle="round" paddingX={1} gap={1}>
+      <Text color="blue">Do you want to commit with this message?</Text>
+      <Text dimColor>{commit}</Text>
+      <Box flexDirection="row" gap={5}>
         <Input label="[y] YES" commit={commit} autoFocus />
         <Input label="[n] NO" commit={commit} />
       </Box>
-    </>
+    </Box>
   );
 };
 
@@ -31,7 +44,6 @@ function Input({
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    // Defer by one event loop tick to let the launch Enter keypress drain
     const t = setTimeout(() => setReady(true), 50);
     return () => clearTimeout(t);
   }, []);
