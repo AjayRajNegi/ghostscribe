@@ -2,6 +2,7 @@ import { execSync } from "child_process";
 import { Box, Text, useFocus, useInput, useApp, useStdout } from "ink";
 import { useState, useEffect } from "react";
 import { runCommit } from "../cli/commit";
+import { getModels } from "../llm/getModels";
 
 const C = {
   bg: "#0a0a0a",
@@ -17,14 +18,65 @@ const C = {
 
 export const UserInput = () => {
   const [commit, setCommit] = useState<string | null>(null);
+  const [models, setModels] = useState<string[]>([]);
+  const [selectedModel, setSelectedModel] = useState<string | null>(null);
+
   const { stdout } = useStdout();
-
-  useEffect(() => {
-    runCommit({ dryRun: false }).then(setCommit);
-  }, []);
-
   const terminalWidth = stdout?.columns ?? 80;
 
+  useEffect(() => {
+    getModels().then(setModels);
+  }, []);
+
+  // Auto-select if only one model
+  useEffect(() => {
+    if (models.length === 1) {
+      setSelectedModel(models[0]);
+    }
+  }, [models]);
+
+  // Only run commit once a model is selected
+  useEffect(() => {
+    if (selectedModel) {
+      runCommit({ dryRun: false, model: selectedModel }).then(setCommit);
+    }
+  }, [selectedModel]);
+
+  // Step 1: fetching models
+  if (models.length === 0) {
+    return (
+      <Box paddingY={1}>
+        <Text color={C.muted}>
+          <Text color={C.accent}>›</Text> fetching your models
+        </Text>
+      </Box>
+    );
+  }
+
+  // Step 2: model selection (only shown if >1 model and none selected yet)
+  if (!selectedModel) {
+    return (
+      <Box paddingY={1}>
+        <Text color={C.muted}>
+          <Text color={C.accent}>›</Text>
+        </Text>
+        <Box flexDirection="column">
+          {models.map((model, index) => (
+            <ModelAction
+              key={model}
+              model={model}
+              autoFocus={index === 0}
+              onSelect={(model) => {
+                setSelectedModel(model);
+              }}
+            />
+          ))}
+        </Box>
+      </Box>
+    );
+  }
+
+  // Step 3: reading diff
   if (commit === null) {
     return (
       <Box paddingY={1}>
@@ -35,6 +87,7 @@ export const UserInput = () => {
     );
   }
 
+  // Step 4: confirm commit
   return (
     <Box flexDirection="column" width={Math.min(terminalWidth - 2, 72)}>
       <Box marginBottom={1}>
@@ -132,6 +185,43 @@ function Action({
         {shortcut.toUpperCase()}{" "}
       </Text>
       <Text color={isFocused ? C.ghost : C.muted}>{label}</Text>
+    </Box>
+  );
+}
+function ModelAction({
+  model,
+  autoFocus,
+  onSelect,
+}: {
+  model: string;
+  autoFocus?: boolean;
+  onSelect: (model: string) => void;
+}) {
+  const { isFocused } = useFocus({ autoFocus });
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setReady(true), 50);
+    return () => clearTimeout(t);
+  }, []);
+
+  useInput((input, key) => {
+    if (!isFocused || !ready) return;
+
+    if (key.return) {
+      onSelect(model);
+    }
+  });
+
+  return (
+    <Box flexDirection="row" gap={1}>
+      <Text color={isFocused ? C.accent : C.muted}>
+        {isFocused ? "▸" : " "}
+      </Text>
+
+      <Text color={isFocused ? C.accent : C.ghost} bold={isFocused}>
+        {model}
+      </Text>
     </Box>
   );
 }

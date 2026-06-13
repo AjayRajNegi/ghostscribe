@@ -3,12 +3,21 @@ import { execSync } from "child_process";
 interface InputPrompt {
   systemPrompt: string;
   userMessage: string;
+  model: string;
 }
 
-export const callLLM = async (input: InputPrompt): Promise<string> => {
-  const prompt = `${input.systemPrompt} ${input.userMessage}`;
+export const callLLM = async ({
+  systemPrompt,
+  userMessage,
+  model,
+}: {
+  systemPrompt: string;
+  userMessage: string;
+  model: string;
+}): Promise<string> => {
+  const prompt = `${systemPrompt} ${userMessage}`;
 
-  const result = execSync("ollama run llama3.1:8b", {
+  const result = execSync(`ollama run ${model} `, {
     //const result = execSync("ollama run gemma3:1b", {
     input: prompt,
     stdio: ["pipe", "pipe", "inherit"],
@@ -17,3 +26,5 @@ export const callLLM = async (input: InputPrompt): Promise<string> => {
 
   return result;
 };
+
+// qwen2.5-coder:14b

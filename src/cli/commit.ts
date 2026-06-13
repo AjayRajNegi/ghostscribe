@@ -7,9 +7,13 @@ import { llmPrompt } from "../prompts/commit";
 
 interface CommitOptions {
   dryRun: boolean;
+  model: string;
 }
 
-export const runCommit = async ({ dryRun }: CommitOptions): Promise<string> => {
+export const runCommit = async ({
+  dryRun,
+  model,
+}: CommitOptions): Promise<string> => {
   // console.log(" ");
   // console.log("Reading staged changes...");
   let rawDiff: string;
@@ -23,12 +27,12 @@ export const runCommit = async ({ dryRun }: CommitOptions): Promise<string> => {
   // console.log("Reading repo context...");
   const context = await getContext();
   const fileDiffs = parseDiff(rawDiff);
-  const generationInput = await llmPrompt({ context, fileDiffs });
+  const { systemPrompt, userMessage } = await llmPrompt({ context, fileDiffs });
 
   let commitMessage: string;
   try {
     //commitMessage = await callClaude(generationInput);
-    commitMessage = await callLLM(generationInput);
+    commitMessage = await callLLM({ systemPrompt, userMessage, model });
   } catch (error) {
     console.error(
       "LLM call failed:",
