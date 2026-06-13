@@ -31,7 +31,7 @@ export const UserInput = () => {
   // Auto-select if only one model
   useEffect(() => {
     if (models.length === 1) {
-      setSelectedModel(models[0]);
+      setSelectedModel(models[0] ?? null);
     }
   }, [models]);
 
