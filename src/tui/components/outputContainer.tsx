@@ -1,16 +1,9 @@
 import { Box, Text } from "ink";
+import { Commit } from "./commit";
 
 export const OutputContainer = ({ command }: { command: string }) => {
-  if (command) {
-    return (
-      <Box>
-        <Box marginRight={1}>
-          <Text>Your query: {command}</Text>
-        </Box>
-
-        {/* <TextInput value={query} onChange={setQuery} onSubmit={onSubmit} /> */}
-      </Box>
-    );
+  if (command == "/help") {
+    return <Commit />;
   }
   return <></>;
 };

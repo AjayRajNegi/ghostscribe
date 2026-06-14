@@ -1,6 +1,7 @@
 import { Box } from "ink";
 import { Header } from "./components/header";
 import { colors } from "./components/constants";
+import { Main } from "./components/main";
 
 export const Index = () => {
   return (
@@ -12,8 +13,10 @@ export const Index = () => {
         borderColor={colors.border}
         borderStyle="single"
         flexDirection="column"
+        paddingBottom={1}
       >
         <Header />
+        <Main />
       </Box>
     </>
   );
