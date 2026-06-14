@@ -28,21 +28,18 @@ export const UserInput = () => {
     getModels().then(setModels);
   }, []);
 
-  // Auto-select if only one model
   useEffect(() => {
     if (models.length === 1) {
       setSelectedModel(models[0] ?? null);
     }
   }, [models]);
 
-  // Only run commit once a model is selected
   useEffect(() => {
     if (selectedModel) {
       runCommit({ dryRun: false, model: selectedModel }).then(setCommit);
     }
   }, [selectedModel]);
 
-  // Step 1: fetching models
   if (models.length === 0) {
     return (
       <Box paddingY={1}>
@@ -53,7 +50,6 @@ export const UserInput = () => {
     );
   }
 
-  // Step 2: model selection (only shown if >1 model and none selected yet)
   if (!selectedModel) {
     return (
       <Box paddingY={1}>
@@ -76,7 +72,6 @@ export const UserInput = () => {
     );
   }
 
-  // Step 3: reading diff
   if (commit === null) {
     return (
       <Box paddingY={1}>
@@ -87,7 +82,6 @@ export const UserInput = () => {
     );
   }
 
-  // Step 4: confirm commit
   return (
     <Box flexDirection="column" width={Math.min(terminalWidth - 2, 72)}>
       <Box marginBottom={1}>
